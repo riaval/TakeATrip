@@ -1,6 +1,9 @@
 package com.takeatrip.repository;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+>>>>>>> 28af60f07548aed6bb2eef047ee6f73cb94f978b
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.Query;
@@ -10,10 +13,18 @@ import org.springframework.stereotype.Repository;
 import com.takeatrip.domain.City;
 
 @Repository
+<<<<<<< HEAD
 public interface CityRepository extends CrudRepository<City, String> {
     @Query("{ '$id' : ?0 }")
     City findById(String id);
 
     @Query("{'name': {$regex: ?0, $options: 'i'}}")
     List<City> searchFirstLetteres(String beginning);
+=======
+public interface CityRepository extends CrudRepository<City, String>{
+	@Query("{ '$id' : ?0 }")
+	City findById(String id);
+	@Query("$orderby:{{'name': /^?0/}:1}")
+	List<City> searchFirstLetteres(String beginning);
+>>>>>>> 28af60f07548aed6bb2eef047ee6f73cb94f978b
 }
