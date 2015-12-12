@@ -7,6 +7,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import dto.*;
+
 @Document(collection = "feedbacks")
 public class Feedback {
 	@Id
@@ -85,5 +87,30 @@ public class Feedback {
 		} else if (!user.equals(other.user))
 			return false;
 		return true;
+	}
+	
+	public FeedbackReport calculate() {
+		int days=0;
+		int money=0;
+		FeedbackReport res=new FeedbackReport();
+		
+		for(Trip t:trips){
+			days+=t.getDays();
+			days+=t.getTransfer().getDuration();
+			money+=(t.getPriceFood()+t.getPriceLiving())*t.getDays();
+			money+=t.getTransfer().getPrice();
+			String transName="Transfer: "+t.getTransfer().getType()+" from "
+					+t.getTransfer().getCityStart().getName()+" to "
+					+t.getTransfer().getCityFinish().getName();
+			TransferReport tRep=new TransferReport(transName,t.getTransfer().getDuration(),
+					t.getTransfer().getPrice());
+			CityReport cRep=new CityReport(t.getTransfer().getCityFinish().getName(),
+					t.getDays(), t.getPriceFood(), t.getPriceLiving());
+			res.addTrasfer(tRep);
+			res.addCity(cRep);
+		}
+		res.setDaysTotal(days);
+		res.setPriceTotal(money);
+		return res;
 	}
 }
