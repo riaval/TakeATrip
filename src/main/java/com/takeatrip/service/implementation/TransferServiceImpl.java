@@ -34,6 +34,11 @@ public class TransferServiceImpl implements TransferService{
 	}
 
 	@Override
+	public void add(Transfer transfer) {
+		transferRepository.save(transfer);
+	}
+
+	@Override
 	public List<Transfer> findByCityPair(City city1, City city2) {
 		City cityA,cityB;
 		if(city1.getName().compareTo(city2.getName())!=-1) {
@@ -51,5 +56,11 @@ public class TransferServiceImpl implements TransferService{
 	@Override
 	public List<Transfer> getAllWithCity(ObjectId cityId) {
 		return transferRepository.getAllWithCity(cityId);
+	}
+
+	@Override
+	public void add(List<Transfer> transfers) {
+		for(Transfer t:transfers)
+			add(t);
 	}
 }

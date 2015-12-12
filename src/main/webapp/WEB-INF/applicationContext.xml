@@ -9,7 +9,8 @@
     <!-- properties -->
     <context:property-placeholder location="classpath*:strings.properties"/>
 
-    <context:component-scan base-package="com.takeatrip.service"/>
+    <context:component-scan base-package="com.takeatrip.service" />
+    <context:component-scan base-package="com.takeatrip.getinfo" />
 
     <!-- MongoDB -->
     <import resource="mongo-config.xml" />

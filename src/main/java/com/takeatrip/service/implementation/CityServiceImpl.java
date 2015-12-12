@@ -68,4 +68,10 @@ public class CityServiceImpl implements CityService {
     	CityReport cr=new CityReport(typeList,priceList,cityFinish.getPriceLive(),cityFinish.getPriceFood());
         return cr;
     }
+
+	@Override
+	public void add(List<City> cities) {
+		for(City c:cities)
+			add(c);
+	}
 }

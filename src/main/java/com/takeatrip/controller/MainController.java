@@ -2,6 +2,7 @@ package com.takeatrip.controller;
 
 import com.takeatrip.domain.City;
 import com.takeatrip.domain.TransferType;
+import com.takeatrip.getinfo.InfoSearcher;
 import com.takeatrip.service.CityService;
 import com.takeatrip.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class MainController {
 
     @Autowired
     TransferService transferService;
+
+    InfoSearcher infoSearcher
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String printIndexPage(ModelMap model) {
@@ -62,6 +65,11 @@ public class MainController {
         transferService.add(city1, city2, price, duration, type);
 
         return "redirect:/addtransfer";
+    }
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public String test() {
+        return "redirect:/";
     }
 
 }
