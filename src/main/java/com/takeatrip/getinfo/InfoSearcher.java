@@ -15,12 +15,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class InfoSearcher {
 	@Autowired
-	static CityService cityService;
+	CityService cityService;
 
 	public InfoSearcher() {
 	}
 
-	static public void makeCities() throws IOException {
+	public void makeCities() throws IOException {
 		String urlString = "https://raw.githubusercontent.com/David-Haim/CountriesToCitiesJSON/master/countriesToCities.json";
 		URL url = new URL(urlString);
 		String str = "";
@@ -40,7 +40,7 @@ public class InfoSearcher {
 		}
 	}
 
-	static private void makeCountryCities(String str){
+	private void makeCountryCities(String str){
 		int startIndex=str.indexOf("\"")+1;
 		int endIndex=str.indexOf("\"",startIndex);
 		String country=str.substring(startIndex, endIndex-1);
@@ -57,7 +57,7 @@ public class InfoSearcher {
 		}
 	}
 
-	static private Boolean nameIsFine(String name) {
+	private Boolean nameIsFine(String name) {
 		for (int i = 0; i < name.length(); i++) {
 			char chr = name.charAt(i);
 			if (chr != ' ' && chr != '\'' && chr != '`' && chr != '-'
@@ -68,7 +68,7 @@ public class InfoSearcher {
 		return true;
 	}
 
-	static public void updateFood(List<City> cities) throws IOException {
+	public void updateFood(List<City> cities) throws IOException {
 		int N = cities.size();
 		for (int i = 0; i < N / 2; i++)
 			updateFood(cities.get(2 * i), cities.get(2 * i + 1));
@@ -76,7 +76,7 @@ public class InfoSearcher {
 			updateFood(cities.get(cities.size() - 1));
 	}
 
-	static public void updateFood(City city1, City city2) throws IOException {
+	public void updateFood(City city1, City city2) throws IOException {
 		String urlString = "http://www.numbeo.com/cost-of-living/compare_cities.jsp?country1=";
 		urlString += city1.getCountry() + "&city1=" + city1.getName()
 				+ "&country2=" + city2.getCountry();
@@ -113,7 +113,7 @@ public class InfoSearcher {
 		}
 	}
 
-	static public void updateFood(City city) throws IOException {
+	public void updateFood(City city) throws IOException {
 		String urlString = "http://www.numbeo.com/cost-of-living/compare_cities.jsp?country1=";
 		urlString += city.getCountry() + "&city1=" + city.getName()
 				+ "&country2=Ukraine&city2=Kiev&displayCurrency=USD";
