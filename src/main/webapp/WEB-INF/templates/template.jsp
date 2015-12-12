@@ -17,6 +17,12 @@
 	<!-- Bootstrap -->
 	<link href="<c:url value="/plugins/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
 	<script type="text/javascript" src="<c:url value="/plugins/bootstrap/js/bootstrap.min.js" />"></script>
+	<%--<script src="https://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script>--%>
+	<link href="<c:url value="/plugins/typeahead/Typeahead.css" />" rel="stylesheet">
+	<script src="<c:url value="/plugins/typeahead/typeahead-min.js" />"></script>
+
+	<link href="<c:url value="/plugins/bootstrap-select/css/bootstrap-select.css" />" rel="stylesheet">
+	<script src="<c:url value="/plugins/bootstrap-select/js/bootstrap-select.js" />"></script>
 	<title><tiles:insertAttribute name="title" /></title>
 </head>
 <body>
@@ -30,7 +36,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">Project name</a>
+			<a class="navbar-brand" href="#">Take A Trip</a>
 		</div>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
@@ -44,9 +50,8 @@
 
 <div class="container">
 
-	<div class="starter-template">
-		<h1>Bootstrap starter template</h1>
-		<p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+	<div class="content">
+		<tiles:insertAttribute name="content" />
 	</div>
 
 </div><!-- /.container -->

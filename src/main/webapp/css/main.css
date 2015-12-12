@@ -9,7 +9,25 @@ html, body {
 body {
 	padding-top: 50px;
 }
-.starter-template {
+
+.content {
 	padding: 40px 15px;
-	text-align: center;
+	/*text-align: center;*/
+}
+
+.fields {
+	display: none;
+}
+
+.field {
+	width: 250px;
+	border: 1px solid #ddd;
+	padding: 10px;
+	border-radius: 5px;
+}
+
+.field input,
+.field .bootstrap-select,
+.field .twitter-typeahead{
+	width: 100% !important;
 }

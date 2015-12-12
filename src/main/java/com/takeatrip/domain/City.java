@@ -17,6 +17,7 @@ public class City{
 	private int priceLive;
 	private int priceFood;
 	private Date date;
+	
 	public City() {	}
 
 	public City(String name, String country, String region, int countryRate, int priceLive, int priceFood, Date date) {
