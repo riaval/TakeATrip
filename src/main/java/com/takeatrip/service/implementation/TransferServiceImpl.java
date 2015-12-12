@@ -16,4 +16,9 @@ public class TransferServiceImpl implements TransferService{
 	public Transfer findById(String id) {
 		return transferRepository.findById(id);
 	}
+
+	@Override
+	public void add(Transfer transfer) {
+		transferRepository.save(transfer);
+	}
 }

@@ -15,4 +15,8 @@ public class FeedbackServiceImpl implements FeedbackService{
 	public Feedback findById(String id) {
 		return feedbackRepository.findById(id);
 	}
+	@Override
+	public void add(Feedback feedback) {
+		feedbackRepository.save(feedback);
+	}
 }

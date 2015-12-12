@@ -16,4 +16,9 @@ public class TripServiceImpl implements TripService{
 	public Trip findById(String id) {
 		return tripRepository.findById(id);
 	}
+
+	@Override
+	public void add(Trip trip) {
+		tripRepository.save(trip);
+	}
 }
