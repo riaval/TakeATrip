@@ -2,6 +2,7 @@ package com.takeatrip.service.implementation;
 
 import java.util.List;
 
+import dto.CityReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +29,15 @@ public class CityServiceImpl implements CityService {
     @Override
     public void add(City city) {
         cityRepository.save(city);
+    }
+
+    @Override
+    public List<City> getAvailableCities(String city) {
+        return null;
+    }
+
+    @Override
+    public CityReport getPrices(String cityStart, String cityFinish) {
+        return null;
     }
 }
