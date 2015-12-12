@@ -1,9 +1,7 @@
 package com.takeatrip.controller;
 
 import com.takeatrip.domain.City;
-import com.takeatrip.domain.User;
 import com.takeatrip.service.CityService;
-import com.takeatrip.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,16 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 public class MainController {
 
     @Autowired
-    UserService userService;
-
-    @Autowired
     CityService cityService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String printIndexPage(ModelMap model) {
-        User user = userService.getUserByEmail("riaval@yandex.ru");
-        model.addAttribute("user", user);
-
+        
         return "index-tiles";
     }
 
@@ -35,10 +28,8 @@ public class MainController {
         String name = request.getParameter("name");
         String country = request.getParameter("country");
         String region = request.getParameter("region");
-        Integer priceLife = Integer.parseInt(request.getParameter("priceLife"));
-        Integer priceFood = Integer.parseInt(request.getParameter("priceFood"));
 
-        cityService.add(new City(name, country, region, priceLife, priceFood));
+        //cityService.add(new City(name, country, region));
 
         return "redirect:/";
     }

@@ -1,5 +1,7 @@
 package com.takeatrip.domain;
 
+import java.sql.Date;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,19 +11,21 @@ public class Transfer {
 	@Id
     private String id;
 	@DBRef
-	private City cityStart;
+	private City cityA;
 	@DBRef
-	private City cityFinish;
+	private City cityB;
 	private int price;
 	private int duration;
 	private TransferType type;
+	private Date date;
 	public Transfer() {	}
-	public Transfer(City start, City finish, int price, int duration, TransferType type){
-		cityStart=start;
-		cityFinish=finish;
+	public Transfer(City start, City finish, int price, int duration, TransferType type, Date date){
+		this.cityA=(start.getName().compareTo(finish.getName())!=1)?start:finish;
+		this.cityB=(start.getName().compareTo(finish.getName())!=-1)?finish:start;
 		this.price=price;
 		this.duration=duration;
 		this.type=type;
+		this.date=date;
 	}
 	public String getId() {
 		return id;
@@ -29,17 +33,27 @@ public class Transfer {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public City getCityStart() {
-		return cityStart;
+	public City getCityA() {
+		return cityA;
 	}
-	public void setCityStart(City cityStart) {
-		this.cityStart = cityStart;
+	public void setCityA(City cityA) {
+		if(cityA.getName().compareTo(cityB.getName())!=1)
+			this.cityA=cityA;
+		else{
+			this.cityA=cityB;
+			cityB=cityA;
+		}
 	}
-	public City getCityFinish() {
-		return cityFinish;
+	public City getCityB() {
+		return cityB;
 	}
-	public void setCityFinish(City cityFinish) {
-		this.cityFinish = cityFinish;
+	public void setCityB(City cityB) {
+		if(cityB.getName().compareTo(cityA.getName())!=-1)
+			this.cityB=cityB;
+		else{
+			this.cityB=cityA;
+			cityA=cityB;
+		}
 	}
 	public int getPrice() {
 		return price;
@@ -59,14 +73,19 @@ public class Transfer {
 	public void setType(TransferType type) {
 		this.type = type;
 	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((cityFinish == null) ? 0 : cityFinish.hashCode());
-		result = prime * result
-				+ ((cityStart == null) ? 0 : cityStart.hashCode());
+		result = prime * result + ((cityA == null) ? 0 : cityA.hashCode());
+		result = prime * result + ((cityB == null) ? 0 : cityB.hashCode());
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + duration;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + price;
@@ -82,15 +101,20 @@ public class Transfer {
 		if (getClass() != obj.getClass())
 			return false;
 		Transfer other = (Transfer) obj;
-		if (cityFinish == null) {
-			if (other.cityFinish != null)
+		if (cityA == null) {
+			if (other.cityA != null)
 				return false;
-		} else if (!cityFinish.equals(other.cityFinish))
+		} else if (!cityA.equals(other.cityA))
 			return false;
-		if (cityStart == null) {
-			if (other.cityStart != null)
+		if (cityB == null) {
+			if (other.cityB != null)
 				return false;
-		} else if (!cityStart.equals(other.cityStart))
+		} else if (!cityB.equals(other.cityB))
+			return false;
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} else if (!date.equals(other.date))
 			return false;
 		if (duration != other.duration)
 			return false;
