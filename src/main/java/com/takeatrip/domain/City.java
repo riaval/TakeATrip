@@ -14,11 +14,15 @@ public class City{
 	private int priceLife;
 	private int priceFood;
 	public City() {	};
-	public City(String name, String region, String country){
-		this.name=name;
-		this.region=region;
-		this.country=country;
+
+	public City(String name, String country, String region, int priceLife, int priceFood) {
+		this.name = name;
+		this.region = region;
+		this.country = country;
+		this.priceLife = priceLife;
+		this.priceFood = priceFood;
 	}
+
 	public String getId() {
 		return id;
 	}

@@ -3,3 +3,12 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 ${user.email}
+
+<form action="http://localhost:8080/TakeATrip/cities" method="post">
+    <input type="text" name="name" placeholder="Name"> <br>
+    <input type="text" name="country" placeholder="Country"> <br>
+    <input type="text" name="region" placeholder="Region"> <br>
+    <input type="number" name="priceLife" placeholder="Price life"> <br>
+    <input type="number" name="priceFood" placeholder="Price food"> <br>
+    <input type="submit">
+</form>
