@@ -33,9 +33,8 @@ public class InfoSearcher {
 		int endIndex = 0;
 		while (startIndex != -1) {
 			endIndex = str.indexOf("]", startIndex);
-			String str1 = str.substring(startIndex, endIndex + 1);
-			if(str1=="Monaco")
-				makeCountryCities(str1);
+			String str1 = str.substring(startIndex, endIndex);
+			makeCountryCities(str1);
 			startIndex = str.indexOf("\"", endIndex);
 		}
 	}
@@ -43,14 +42,14 @@ public class InfoSearcher {
 	static private void makeCountryCities(String str){
 		int startIndex=str.indexOf("\"")+1;
 		int endIndex=str.indexOf("\"",startIndex);
-		String country=str.substring(startIndex, endIndex);
-		if(!nameIsFine(country))
+		String country=str.substring(startIndex, endIndex-1);
+		if(!nameIsFine(country) || country!="Monaco")
 			return;
 		
 		startIndex=str.indexOf("\"",endIndex+1)+1;
 		while(startIndex!=-1){
 			endIndex=str.indexOf("\"",startIndex);
-			String city=str.substring(startIndex, endIndex);
+			String city=str.substring(startIndex, endIndex-1);
 			if(nameIsFine(city))
 				cityService.add(new City(city,country,"",1,0,0,Date.valueOf(LocalDate.now())));
 			startIndex=str.indexOf("\"",endIndex+1)+1;
@@ -60,7 +59,7 @@ public class InfoSearcher {
 	static private Boolean nameIsFine(String name) {
 		for (int i = 0; i < name.length(); i++) {
 			char chr = name.charAt(i);
-			if (chr != ' ' && chr != '\'' && chr != '`'
+			if (chr != ' ' && chr != '\'' && chr != '`' && chr != '-'
 					&& !(chr >= 'a' && chr <= 'z')
 					&& !(chr >= 'A' && chr <= 'Z'))
 				return false;
