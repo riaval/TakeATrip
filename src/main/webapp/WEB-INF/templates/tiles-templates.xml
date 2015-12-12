@@ -14,4 +14,14 @@
         <put-attribute name="title" value="TakeATrip — Main"/>
     </definition>
 
+    <definition name="city-tiles" extends="template-main">
+        <put-attribute name="content" value="/WEB-INF/pages/city.jsp"/>
+        <put-attribute name="title" value="TakeATrip — City"/>
+    </definition>
+
+    <definition name="transfer-tiles" extends="template-main">
+        <put-attribute name="content" value="/WEB-INF/pages/transfer.jsp"/>
+        <put-attribute name="title" value="TakeATrip — Transfer"/>
+    </definition>
+
 </tiles-definitions>

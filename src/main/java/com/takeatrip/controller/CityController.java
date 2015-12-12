@@ -26,7 +26,7 @@ public class CityController {
         return cityService.getAvailableCities(city);
     }
 
-    @RequestMapping(value="/available", method = RequestMethod.GET)
+    @RequestMapping(value="/price", method = RequestMethod.GET)
     public CityReport getPrice(@RequestParam(value = "cityStart") String cityStart,
                          @RequestParam(value = "cityFinish") String cityFinish) {
         return cityService.getPrices(cityStart, cityFinish);

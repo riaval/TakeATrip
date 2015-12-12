@@ -5,6 +5,7 @@ import java.util.List;
 
 import dto.CityReport;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class CityServiceImpl implements CityService {
     
     @Override
     public City findById(String id) {
-        return cityRepository.findById(id);
+        return cityRepository.findOne(id);
     }
 
     @Override
@@ -41,10 +42,11 @@ public class CityServiceImpl implements CityService {
     @Override
     public List<City> getAvailableCities(String cityId) {
     	City c=findById(cityId);
-    	List<Transfer> tList=transferService.getAllWithCity(c);
+        ObjectId id = new ObjectId(cityId);
+    	List<Transfer> tList=transferService.getAllWithCity(id);
     	List<City> res=new ArrayList<>();
     	for(Transfer t:tList){
-    		if(t.getCityA()==c)
+    		if(t.getCityA().equals(c))
     			res.add(t.getCityB());
     		else res.add(t.getCityA());
     	}

@@ -2,6 +2,9 @@ package com.takeatrip.service.implementation;
 
 import java.util.List;
 
+import com.takeatrip.domain.TransferType;
+import com.takeatrip.repository.CityRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,9 @@ import com.takeatrip.service.TransferService;
 public class TransferServiceImpl implements TransferService{
 	@Autowired
     private TransferRepository transferRepository;
+
+	@Autowired
+	private CityRepository cityRepository;
 	
 	@Override
 	public Transfer findById(String id) {
@@ -21,27 +27,29 @@ public class TransferServiceImpl implements TransferService{
 	}
 
 	@Override
-	public void add(Transfer transfer) {
-		transferRepository.save(transfer);
+	public void add(String city1Id, String city2Id, Integer price, Integer duration, TransferType type) {
+		City city1 = cityRepository.findOne(city1Id);
+		City city2 = cityRepository.findOne(city2Id);
+		transferRepository.save(new Transfer(city1, city2, price, duration, type, null));
 	}
 
 	@Override
 	public List<Transfer> findByCityPair(City city1, City city2) {
 		City cityA,cityB;
-		if(city1.getName().compareTo(city2.getName())!=-1)
-		{
+		if(city1.getName().compareTo(city2.getName())!=-1) {
 			cityA=city1;
 			cityB=city2;
-		}
-		else{
+		} else {
 			cityA=city2;
 			cityB=city1;
 		}
-		return transferRepository.findByCityPair(cityA, cityB);
+		ObjectId cityAId = new ObjectId(cityA.getId());
+		ObjectId cityBId = new ObjectId(cityB.getId());
+		return transferRepository.findByCityPair(cityAId, cityBId);
 	}
 
 	@Override
-	public List<Transfer> getAllWithCity(City city) {
-		return transferRepository.getAllWithCity(city);
+	public List<Transfer> getAllWithCity(ObjectId cityId) {
+		return transferRepository.getAllWithCity(cityId);
 	}
 }
