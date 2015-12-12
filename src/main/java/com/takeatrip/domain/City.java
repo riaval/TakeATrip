@@ -13,7 +13,7 @@ public class City{
 	private String country;
 	private int priceLife;
 	private int priceFood;
-	public City() {	};
+	public City() {	}
 	public City(String name, String region, String country){
 		this.name=name;
 		this.region=region;

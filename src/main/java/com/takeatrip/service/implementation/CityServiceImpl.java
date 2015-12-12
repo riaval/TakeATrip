@@ -1,6 +1,6 @@
 package com.takeatrip.service.implementation;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,10 +20,10 @@ public class CityServiceImpl implements CityService{
 	}
 
 	@Override
-	public ArrayList<City> searchFirstLetters(String beginning) {
+	public List<City> searchFirstLetters(String beginning) {
 		return cityRepository.searchFirstLetteres(beginning);
 	}
-	
+	@Override
 	public void add(City city){
 		cityRepository.save(city);
 	}
