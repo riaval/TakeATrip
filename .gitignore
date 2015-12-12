@@ -1,0 +1,17 @@
+/.idea
+/.settings
+/target
+/lib
+*.iml
+
+*.class
+
+
+
+# Package Files #
+
+*.jar
+
+*.war
+
+*.ear

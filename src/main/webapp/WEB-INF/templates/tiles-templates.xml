@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+
+    <definition name="template-main" template="/WEB-INF/templates/template.jsp">
+        <put-attribute name="content" value=""/>
+    </definition>
+
+    <definition name="index-tiles" extends="template-main">
+        <put-attribute name="content" value="/WEB-INF/pages/index.jsp"/>
+        <put-attribute name="title" value="TakeATrip — Main"/>
+    </definition>
+
+</tiles-definitions>
