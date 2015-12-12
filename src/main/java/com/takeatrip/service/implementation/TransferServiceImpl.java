@@ -44,4 +44,10 @@ public class TransferServiceImpl implements TransferService{
 	public List<Transfer> getAllWithCity(City city) {
 		return transferRepository.getAllWithCity(city);
 	}
+
+	@Override
+	public void add(List<Transfer> transfers) {
+		for(Transfer t:transfers)
+			add(t);
+	}
 }

@@ -11,6 +11,8 @@ public interface CityService {
     List<City> searchFirstLetters(String beginning);
 
     public void add(City city);
+    
+    public void add(List<City> cities);
 
     List<City> getAvailableCities(String city);
 
