@@ -13,8 +13,7 @@ public class City{
 	private String country;
 	private int priceLife;
 	private int priceFood;
-<<<<<<< HEAD
-	public City() {	};
+	public City() {	}
 
 	public City(String name, String country, String region, int priceLife, int priceFood) {
 		this.name = name;
@@ -22,13 +21,6 @@ public class City{
 		this.country = country;
 		this.priceLife = priceLife;
 		this.priceFood = priceFood;
-=======
-	public City() {	}
-	public City(String name, String region, String country){
-		this.name=name;
-		this.region=region;
-		this.country=country;
->>>>>>> 28af60f07548aed6bb2eef047ee6f73cb94f978b
 	}
 
 	public String getId() {
