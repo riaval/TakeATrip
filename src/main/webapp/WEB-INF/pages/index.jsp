@@ -27,7 +27,27 @@
 
         <div class="form-group">
             <label>Days</label> <br>
-            <input type="number" class="form-control">
+            <input type="number" class="form-control days">
+        </div>
+
+        <div class="checkout">
+            <div class="price transfer">
+                <strong>Transfer price: </strong>
+                <span>$230</span>
+            </div>
+            <div class="price living">
+                <strong>Living price: </strong>
+                <span>$230</span>
+            </div>
+            <div class="price food">
+                <strong>Food price: </strong>
+                <span>$230</span>
+            </div>
+
+            <div class="total">
+                <strong>Total: </strong>
+                <span>$230</span>
+            </div>
         </div>
     </div>
 
@@ -53,7 +73,27 @@
 
     <div class="form-group">
         <label>Days</label> <br>
-        <input type="number" class="form-control">
+        <input type="number" class="form-control days">
+    </div>
+
+    <div class="checkout">
+        <div class="price transfer">
+            <strong>Transfer price: </strong>
+            <span>$230</span>
+        </div>
+        <div class="price living">
+            <strong>Living price: </strong>
+            <span>$230</span>
+        </div>
+        <div class="price food">
+            <strong>Food price: </strong>
+            <span>$230</span>
+        </div>
+
+        <div class="total">
+            <strong>Total: </strong>
+            <span>$230</span>
+        </div>
     </div>
 </div>
 
@@ -78,6 +118,7 @@
             process(availableCities)
         }
     }).on('typeahead:selected', function (ev, datum) {
+        var $field = $(ev.currentTarget).parents('.field.full');
         $.ajax({
             type: 'GET',
             dataType: 'json',
@@ -92,8 +133,19 @@
             response.type.forEach(function (type, index) {
                 $('.selectpicker').append(
                         $('<option>').val(type).text(capitalizeFirstLetter(type))
-                ).removeAttr('disabled');
-                $('.selectpicker').selectpicker('render');
+                ).prop('disabled', false);
+                $('.selectpicker').selectpicker('refresh');
+
+                $field.find('.days').removeAttr('disabled').val(1).change(function (ev) {
+
+                });
+
+                $field.find('.checkout').show();
+                $field.find('.transfer span').html('$' + response.price[0]);
+                $field.find('.living span').html('$' + response.priceLive);
+                $field.find('.food span').html('$' + response.priceFood);
+
+//                $field.find('.selectpicker').change()
             });
 
         });
@@ -157,9 +209,9 @@
         }
     });
 
-    $('.selectpicker').selectpicker();
+//    $('.selectpicker').selectpicker();
 
     function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     }
 </script>
