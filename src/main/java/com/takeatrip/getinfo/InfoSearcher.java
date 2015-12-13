@@ -213,11 +213,11 @@ public class InfoSearcher {
 	}
 	
 	public void updateCountryLive(List<City> cities) throws IOException {
-		String urlString = "http://www.numbeo.com/travel-prices/city_result.jsp?country=";
+		String urlString = "http://www.numbeo.com/travel-prices/country_result.jsp?country=";
 		urlString += cities.get(0).getCountry() + "&displayCurrency=USD";
 		urlString=urlString.replace(' ', '+');
 		URL url = new URL(urlString);
-		String str = "";
+			String str = "";
 		try (InputStream in = url.openStream()) {
 			int c;
 			while ((c = in.read()) != -1)
@@ -242,7 +242,10 @@ public class InfoSearcher {
 				startIndex = str.indexOf(cityStr + "</a></td>");
 				if (startIndex != -1) {
 					endIndex = str.indexOf("<a href=", startIndex);
-					String str1 = str.substring(startIndex, endIndex);
+					String str1;
+					if(endIndex!=-1)
+						str1 = str.substring(startIndex, endIndex);
+					else str1 = str.substring(startIndex);
 
 					startIndex = str1.indexOf("<td style",
 							str1.indexOf("<td style") + 1);

@@ -15,6 +15,19 @@ body {
 	/*text-align: center;*/
 }
 
+.main-query {
+	padding: 0 120px;
+}
+
+.twitter-typeahead {
+	width: 100%;
+}
+
+.motivation {
+	text-align: center;
+	margin-top: 50px;
+}
+
 #template {
 	display: none;
 }
@@ -25,6 +38,7 @@ body {
 
 .fields {
 	display: none;
+	margin-top: 40px;
 }
 
 .field {
@@ -61,10 +75,19 @@ body {
 }
 
 .price {
-	margin-bottom: 5px;
-	/*background-color: #47d147;*/
+	margin-bottom: 3px;
+	padding: 2px 5px;
+}
+
+.worth {
+	background-color: #ffcccc;
+}
+
+.best {
+	background-color: #e5ffe5;
 }
 
 .total {
 	margin-top: 10px;
+	padding: 2px 5px;
 }

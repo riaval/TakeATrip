@@ -3,57 +3,21 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <form>
-    <div class="form-group">
-        <label>Choose City</label> <br>
-        <input class="typeahead form-control" type="text" placeholder="City">
+    <div class="form-group main-query">
+        <%--<label>Choose City</label> <br>--%>
+        <input class="typeahead form-control" type="text" placeholder="Departure city">
     </div>
 </form>
 
 <div class="fields">
-    <%--<div class="field full">--%>
-        <%--<div class="form-group">--%>
-            <%--<label>Direction City</label> <br>--%>
-            <%--<input class="typeahead-new form-control" type="text" placeholder="City">--%>
-        <%--</div>--%>
-
-        <%--<div class="form-group">--%>
-            <%--<label>Transport</label> <br>--%>
-            <%--<select class="selectpicker" disabled>--%>
-                <%--&lt;%&ndash;<option value="PLANE">Plane</option>&ndash;%&gt;--%>
-                <%--&lt;%&ndash;<option value="BUS">Bus</option>&ndash;%&gt;--%>
-                <%--&lt;%&ndash;<option value="TRAIN">Train</option>&ndash;%&gt;--%>
-            <%--</select>--%>
-        <%--</div>--%>
-
-        <%--<div class="form-group">--%>
-            <%--<label>Days</label> <br>--%>
-            <%--<input type="number" class="form-control days">--%>
-        <%--</div>--%>
-
-        <%--<div class="checkout">--%>
-            <%--<div class="price transfer">--%>
-                <%--<strong>Transfer price: </strong>--%>
-                <%--<span>$230</span>--%>
-            <%--</div>--%>
-            <%--<div class="price living">--%>
-                <%--<strong>Living price: </strong>--%>
-                <%--<span>$230</span>--%>
-            <%--</div>--%>
-            <%--<div class="price food">--%>
-                <%--<strong>Food price: </strong>--%>
-                <%--<span>$230</span>--%>
-            <%--</div>--%>
-
-            <%--<div class="total">--%>
-                <%--<strong>Total: </strong>--%>
-                <%--<span>$230</span>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-
     <div class="field empty">
         <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
     </div>
+</div>
+
+<div class="motivation">
+    <h1>Compare your trips!</h1>
+    <p class="lead">Start using by piking departure city in the input above.</p>
 </div>
 
 <div class="field full" id="template">
@@ -79,20 +43,20 @@
     <div class="checkout">
         <div class="price transfer">
             <strong>Transfer price: </strong>
-            <span>$230</span>
+            <span></span>
         </div>
         <div class="price living">
             <strong>Living price: </strong>
-            <span>$230</span>
+            <span></span>
         </div>
         <div class="price food">
             <strong>Food price: </strong>
-            <span>$230</span>
+            <span></span>
         </div>
 
         <div class="total">
             <strong>Total: </strong>
-            <span>$230</span>
+            <span></span>
         </div>
     </div>
 </div>
@@ -116,13 +80,12 @@
                     city: query
                 }
             }).done(function (response) {
-
+                $('.motivation').hide();
                 var matches = [];
                 $.each(response, function (i, city) {
                     matches.push({value:city.name});
                 });
 
-                //                console.log(response)
                 return process(response);
             });
         }
@@ -137,7 +100,6 @@
             }
         }).done(function (response) {
             window.availableCities = response;
-            //            console.log(response)
         });
         $('.fields').show();
     });
@@ -189,6 +151,37 @@
                         $field.find('.living span').html('$' + living);
                         $field.find('.food span').html('$' + food);
                         $field.find('.total span').html('$' + (transfer + living + food));
+
+                        optimazeColours();
+                    }
+
+                    function optimazeColours() {
+                        optimazeColour($('.fields .price.transfer'));
+                        optimazeColour($('.fields .price.living'));
+                        optimazeColour($('.fields .price.food'));
+                        optimazeColour($('.fields .total'));
+
+                    }
+
+                    function optimazeColour(prices) {
+                        var best = {
+                            val: 99999,
+                            price: []
+                        };
+                        prices.each(function (index, price) {
+                            var nPrice = +$(price).find('span').text().substring(1);
+                            if (nPrice < best.val) {
+                                best.val = nPrice;
+                                best.price = [$(price)]
+                            } else if (nPrice == best.val) {
+                                best.val = nPrice;
+                                best.price.push($(price))
+                            }
+                        });
+                        prices.removeClass('best').addClass('worth');
+                        $.each(best.price, function (index, item) {
+                            item.removeClass('worth').addClass('best')
+                        });
                     }
 
                 });
