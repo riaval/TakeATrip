@@ -15,6 +15,32 @@ body {
 	/*text-align: center;*/
 }
 
+.main-query {
+	padding: 0 120px;
+	position: relative;
+}
+
+.main-query .glyphicon {
+	position: absolute;
+	top: 10px;
+	right: 130px;
+	cursor: pointer;
+	opacity: 0.5;
+}
+
+.main-query .glyphicon:hover {
+	opacity: 0.8;
+}
+
+.twitter-typeahead {
+	width: 100%;
+}
+
+.motivation {
+	text-align: center;
+	margin-top: 50px;
+}
+
 #template {
 	display: none;
 }
@@ -25,6 +51,7 @@ body {
 
 .fields {
 	display: none;
+	margin-top: 40px;
 }
 
 .field {
@@ -61,10 +88,26 @@ body {
 }
 
 .price {
-	margin-bottom: 5px;
-	/*background-color: #47d147;*/
+	margin-bottom: 3px;
+	padding: 2px 5px;
+}
+
+.worth {
+	background-color: #ffcccc;
+}
+
+.best {
+	background-color: #e5ffe5;
 }
 
 .total {
 	margin-top: 10px;
+	padding: 2px 5px;
+}
+
+/* typeahead */
+.tt-suggestion.tt-cursor {
+	color: #fff;
+	background-color: #0097cf;
+	cursor: pointer;
 }
