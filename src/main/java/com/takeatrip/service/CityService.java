@@ -17,4 +17,6 @@ public interface CityService {
     List<City> getAvailableCities(String city);
 
     CityReport getPrices(String cityStart, String cityFinish);
+
+    List<City> getAll();
 }

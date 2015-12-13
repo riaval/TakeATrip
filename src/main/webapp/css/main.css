@@ -19,6 +19,10 @@ body {
 	display: none;
 }
 
+.empty-message {
+	padding: 5px;
+}
+
 .fields {
 	display: none;
 }
@@ -31,7 +35,7 @@ body {
 	min-height: 243px;
 	display: inline-block;
 	vertical-align: top;
-	margin-right: 10px;
+	margin-right: 15px;
 }
 
 .field.empty {

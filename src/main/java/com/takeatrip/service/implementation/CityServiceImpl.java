@@ -1,8 +1,10 @@
 package com.takeatrip.service.implementation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import com.google.common.collect.Lists;
 import dto.CityReport;
 
 import org.bson.types.ObjectId;
@@ -69,7 +71,12 @@ public class CityServiceImpl implements CityService {
         return cr;
     }
 
-	@Override
+    @Override
+    public List<City> getAll() {
+        return Lists.newArrayList(cityRepository.findAll());
+    }
+
+    @Override
 	public void add(List<City> cities) {
 		for(City c:cities)
 			add(c);

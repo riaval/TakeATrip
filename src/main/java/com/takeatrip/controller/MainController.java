@@ -71,7 +71,7 @@ public class MainController {
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String test() throws IOException {
-        infoSearcher.makeCities();
+        infoSearcher.updateFood(cityService.getAll());
         return "redirect:/";
     }
 
