@@ -3,13 +3,17 @@ package com.takeatrip.getinfo;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.takeatrip.domain.City;
 import com.takeatrip.service.CityService;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -68,9 +72,10 @@ public class InfoSearcher {
 					endIndex = str.indexOf("\"", startIndex);
 				else
 					endIndex--;
-				String city=str.substring(startIndex, endIndex);
+				String city = str.substring(startIndex, endIndex);
 				if (nameIsFine(city))
-					cityService.add(new City(city, country, "", 1, 0, 0, new Date()));
+					cityService.add(new City(city, country, "", 1, 0, 0,
+							new Date()));
 				startIndex = str.indexOf("\"", endIndex + 1);
 				if (startIndex != -1)
 					startIndex++;
@@ -102,14 +107,14 @@ public class InfoSearcher {
 	public void updateFood(City city1, City city2) throws IOException {
 		String urlString = "http://www.numbeo.com/cost-of-living/compare_cities.jsp?country1=";
 		urlString += city1.getCountry() + "&city1=" + city1.getName();
-		if(!city1.getRegion().equals(""))
-			urlString+="%2C+";
+		if (!city1.getRegion().equals(""))
+			urlString += "%2C+";
 		urlString += city1.getRegion() + "&country2=" + city2.getCountry();
 		urlString += "&city2=" + city2.getName();
-		if(!city2.getRegion().equals(""))
-			urlString+="%2C+";
+		if (!city2.getRegion().equals(""))
+			urlString += "%2C+";
 		urlString += city2.getRegion() + "&displayCurrency=USD";
-		urlString=urlString.replace(' ','+');
+		urlString = urlString.replace(' ', '+');
 		URL url = new URL(urlString);
 		String str = "";
 		try (InputStream in = url.openStream()) {
@@ -121,23 +126,23 @@ public class InfoSearcher {
 		if (str.indexOf("No data for one of these cities :(. ") != -1) {
 			updateFood(city1);
 			updateFood(city2);
-		} else if(str.indexOf("Not enough data to calculate difference in Restaurant Prices") != -1) {
+		} else if (str
+				.indexOf("Not enough data to calculate difference in Restaurant Prices") != -1) {
 			updateFood(city1);
 			updateFood(city2);
-		} else if(str.indexOf("Numbeo doesn't have one of those cities in the database") != -1) {
+		} else if (str
+				.indexOf("Numbeo doesn't have one of those cities in the database") != -1) {
 			updateFood(city1);
 			updateFood(city2);
 		} else {
-			int startIndex = str
-					.indexOf("Meal, Inexpensive Restaurant");
+			int startIndex = str.indexOf("Meal, Inexpensive Restaurant");
 			int endIndex = str.indexOf("</tr>", startIndex);
 			str = str.substring(startIndex, endIndex);
 
 			startIndex = str.indexOf("class") + 10;
 			endIndex = str.indexOf("&", startIndex);
 
-			String str1=str
-					.substring(startIndex, endIndex);
+			String str1 = str.substring(startIndex, endIndex);
 			city1.setPriceFood((int) Math.round(Double.parseDouble(str1)));
 			cityService.add(city1);
 
@@ -145,8 +150,7 @@ public class InfoSearcher {
 
 			startIndex = str.indexOf("class=\"\">") + 10;
 			endIndex = str.indexOf("&", startIndex);
-			str1=str
-					.substring(startIndex, endIndex);
+			str1 = str.substring(startIndex, endIndex);
 			city2.setPriceFood((int) Math.round(Double.parseDouble(str1)));
 			cityService.add(city2);
 		}
@@ -155,10 +159,11 @@ public class InfoSearcher {
 	public void updateFood(City city) throws IOException {
 		String urlString = "http://www.numbeo.com/cost-of-living/compare_cities.jsp?country1=";
 		urlString += city.getCountry() + "&city1=" + city.getName();
-		if(!city.getRegion().equals(""))
-			urlString+="%2C+";
-		urlString += city.getRegion() + "&country2=Ukraine&city2=Kiev&displayCurrency=USD";
-		urlString=urlString.replace(' ','+');
+		if (!city.getRegion().equals(""))
+			urlString += "%2C+";
+		urlString += city.getRegion()
+				+ "&country2=Ukraine&city2=Kiev&displayCurrency=USD";
+		urlString = urlString.replace(' ', '+');
 		URL url = new URL(urlString);
 		String str = "";
 		try (InputStream in = url.openStream()) {
@@ -169,9 +174,11 @@ public class InfoSearcher {
 
 		if (str.indexOf("No data for one of these cities :(. ") != -1) {
 			city.setPriceFood(0);
-		} else if(str.indexOf("Not enough data to calculate difference in Restaurant Prices") != -1) {
+		} else if (str
+				.indexOf("Not enough data to calculate difference in Restaurant Prices") != -1) {
 			city.setPriceFood(0);
-		} else if(str.indexOf("Numbeo doesn't have one of those cities in the database") != -1) {
+		} else if (str
+				.indexOf("Numbeo doesn't have one of those cities in the database") != -1) {
 			city.setPriceFood(0);
 		} else {
 			int startIndex = str
@@ -185,6 +192,72 @@ public class InfoSearcher {
 			city.setPriceFood((int) Math.round(Double.parseDouble(str
 					.substring(startIndex, endIndex))));
 			cityService.add(city);
+		}
+	}
+
+	public void updateLive() throws IOException{
+		List<City> cities=cityService.getAll();
+		Set<String> countries=new HashSet<>();
+		for(City c:cities)
+			countries.add(c.getCountry());
+		
+		for(String count:countries){
+			List<City> countryCities=new ArrayList<>();
+			for(City c:cities){
+				if(c.getCountry().equals(count))
+					countryCities.add(c);
+			}
+			
+			updateCountryLive(countryCities);
+		}
+	}
+	
+	public void updateCountryLive(List<City> cities) throws IOException {
+		String urlString = "http://www.numbeo.com/travel-prices/city_result.jsp?country=";
+		urlString += cities.get(0).getCountry() + "&displayCurrency=USD";
+		urlString=urlString.replace(' ', '+');
+		URL url = new URL(urlString);
+		String str = "";
+		try (InputStream in = url.openStream()) {
+			int c;
+			while ((c = in.read()) != -1)
+				str += (char) c;
+		}
+
+		if (str.indexOf("Numbeo doesn't have that country in the database") != -1) {
+			for (City c : cities) {
+				c.setPriceLive(0);
+			}
+			cityService.add(cities);
+		} else {
+			int startIndex = str
+					.indexOf("<table class=\"nicerTable hotel_price_country\">");
+			int endIndex = str.indexOf("</table>", startIndex);
+			str = str.substring(startIndex, endIndex);
+
+			for (City c : cities) {
+				String cityStr = c.getName()
+						+ (!((c.getRegion().equals(""))) ? ", " : "")
+								+ c.getRegion();
+				startIndex = str.indexOf(cityStr + "</a></td>");
+				if (startIndex != -1) {
+					endIndex = str.indexOf("<a href=", startIndex);
+					String str1 = str.substring(startIndex, endIndex);
+
+					startIndex = str1.indexOf("<td style",
+							str1.indexOf("<td style") + 1);
+					endIndex = str1.indexOf("</td>", startIndex);
+					str1 = str1.substring(startIndex, endIndex);
+
+					startIndex = str1.indexOf(">") + 1;
+					endIndex = str1.lastIndexOf('&');
+					str1 = str1.substring(startIndex, endIndex);
+					int price = (int) Math.round(Double.parseDouble(str1));
+					c.setPriceLive(price);
+				}
+				else c.setPriceLive(0);
+			}
+			cityService.add(cities);
 		}
 	}
 }
