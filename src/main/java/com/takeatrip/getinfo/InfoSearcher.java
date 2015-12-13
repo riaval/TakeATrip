@@ -21,45 +21,63 @@ public class InfoSearcher {
 	}
 
 	public void makeCities() throws IOException {
-		String urlString="https://raw.githubusercontent.com/David-Haim/CountriesToCitiesJSON/master/countriesToCities.json";
+		String urlString = "https://raw.githubusercontent.com/David-Haim/CountriesToCitiesJSON/master/countriesToCities.json";
 		URL url = new URL(urlString);
 		String str = "";
 		int startIndex = 0;
 		int endIndex = 0;
 		try (InputStream in = url.openStream()) {
 			int c;
-			while ((c = in.read()) != -1){
-				if(c!=0){
-					char chr=(char)c;
+			int brNum = 0;
+			while ((c = in.read()) != -1) {
+				if (c != 0) {
+					char chr = (char) c;
 					str += chr;
-					if(chr=='\"' && startIndex==0){
-						startIndex=str.length()-1;
+					if (chr == '\"' && startIndex == 0) {
+						startIndex = str.length() - 1;
 					}
-					if(chr==']'){
-						endIndex=str.length();
-						str=str.substring(startIndex,endIndex);
-						startIndex=0;
-						makeCountryCities(str);
-						str="";
+					if (chr == '[')
+						brNum++;
+					if (chr == ']') {
+						brNum--;
+						if (brNum == 0 && str.charAt(str.length() - 2) == '\"') {
+							endIndex = str.length();
+							str = str.substring(startIndex, endIndex - 1) + "]";
+							startIndex = 0;
+							makeCountryCities(str);
+							str = "";
+						}
 					}
-			}}
+				}
+			}
 		}
 	}
 
-	private void makeCountryCities(String str){
-		int startIndex=str.indexOf("\"")+1;
-		int endIndex=str.indexOf("\"",startIndex);
-		String country=str.substring(startIndex, endIndex);
-		if(!nameIsFine(country) || !country.equals("Monaco"))
+	private void makeCountryCities(String str) {
+		int startIndex = str.indexOf("\"") + 1;
+		int endIndex = str.indexOf("\"", startIndex);
+		String country = str.substring(startIndex, endIndex);
+		if (!nameIsFine(country) || !country.equals("Monaco"))
 			return;
-		
-		startIndex=str.indexOf("\"",endIndex+1)+1;
-		while(startIndex!=-1){
-			endIndex=str.indexOf("\"",startIndex);
-			String city=str.substring(startIndex, endIndex);
-			if(nameIsFine(city))
-				cityService.add(new City(city,country,"",1,0,0,Date.valueOf("2015-12-12")));
-			startIndex=str.indexOf("\"",endIndex+1)+1;
+
+		if (!country.equals("Jersey")) {
+			startIndex = str.indexOf("\"", endIndex + 1) + 1;
+			while (startIndex != -1) {
+				endIndex = str.indexOf(",", startIndex + 1);
+				if (endIndex == -1)
+					endIndex = str.indexOf("\"", startIndex);
+				else
+					endIndex--;
+				String city=str.substring(startIndex, endIndex);
+				if (nameIsFine(city))
+					cityService.add(new City(city, country, "", 1, 0, 0, Date
+							.valueOf("2015-12-12")));
+				startIndex = str.indexOf("\"", endIndex + 1);
+				if (startIndex != -1)
+					startIndex++;
+				if (startIndex == str.length() - 1)
+					startIndex = -1;
+			}
 		}
 	}
 
