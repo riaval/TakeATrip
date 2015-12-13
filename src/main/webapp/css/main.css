@@ -17,6 +17,19 @@ body {
 
 .main-query {
 	padding: 0 120px;
+	position: relative;
+}
+
+.main-query .glyphicon {
+	position: absolute;
+	top: 10px;
+	right: 130px;
+	cursor: pointer;
+	opacity: 0.5;
+}
+
+.main-query .glyphicon:hover {
+	opacity: 0.8;
 }
 
 .twitter-typeahead {
@@ -90,4 +103,11 @@ body {
 .total {
 	margin-top: 10px;
 	padding: 2px 5px;
+}
+
+/* typeahead */
+.tt-suggestion.tt-cursor {
+	color: #fff;
+	background-color: #0097cf;
+	cursor: pointer;
 }

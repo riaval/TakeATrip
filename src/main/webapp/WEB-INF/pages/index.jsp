@@ -2,12 +2,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<form>
+<div>
     <div class="form-group main-query">
         <%--<label>Choose City</label> <br>--%>
         <input class="typeahead form-control" type="text" placeholder="Departure city">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
     </div>
-</form>
+</div>
 
 <div class="fields">
     <div class="field empty">
@@ -65,6 +66,12 @@
     availableCities = [];
     currentCity = null;
 
+    $('.glyphicon.glyphicon-remove').click(function () {
+        $('.typeahead').val('');
+        $('.fields').hide();
+        $('.motivation').show();
+    });
+
     $('.typeahead').typeahead({
         hint: false,
         highlight: false
@@ -80,7 +87,6 @@
                     city: query
                 }
             }).done(function (response) {
-                $('.motivation').hide();
                 var matches = [];
                 $.each(response, function (i, city) {
                     matches.push({value:city.name});
@@ -102,6 +108,7 @@
             window.availableCities = response;
         });
         $('.fields').show();
+        $('.motivation').hide();
     });
 
     $('.field.empty').click(function (ev) {
@@ -128,12 +135,17 @@
                     cityFinish: datum.id
                 }
             }).done(function (response) {
+                var priceIndex = 0;
                 response.type.forEach(function (type, index) {
                     $field.find('.selectpicker').append(
                             $('<option>').val(type).text(capitalizeFirstLetter(type))
                     ).prop('disabled', false);
-                    $field.find('.selectpicker').selectpicker('refresh');
-                    $field.find('.bootstrap-select.disabled').remove()
+                    $field.find('.selectpicker').selectpicker('refresh').change(function (ev) {
+                        priceIndex = $field.find('.selectpicker option:selected').index();
+                        $field.find('.days').val(1);
+                        change(1);
+                    });
+                    $field.find('.bootstrap-select.disabled').remove();
                     $field.find('.checkout').show();
 
                     $field.find('.days').removeAttr('disabled').val(1).change(function (ev) {
@@ -143,7 +155,7 @@
                     change(1);
 
                     function change(days) {
-                        var transfer = +response.price[0];
+                        var transfer = +response.price[priceIndex];
                         var living = +response.priceLive * days;
                         var food = +response.priceFood * days;
 
