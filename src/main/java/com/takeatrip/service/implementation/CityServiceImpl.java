@@ -85,4 +85,9 @@ public class CityServiceImpl implements CityService {
 		for(City c:cities)
 			add(c);
 	}
+
+	@Override
+	public List<City> getCountry(String country) {
+		return cityRepository.getCountry(country);
+	}
 }

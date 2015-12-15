@@ -15,4 +15,7 @@ public interface CityRepository extends CrudRepository<City, String> {
 
     @Query("{'name': {$regex: ?0, $options: 'i'}}")
     List<City> searchFirstLetteres(String beginning);
+    
+    @Query("{'country':?0}")
+    List<City> getCountry(String country);
 }

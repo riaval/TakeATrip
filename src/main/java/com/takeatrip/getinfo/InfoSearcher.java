@@ -104,6 +104,12 @@ public class InfoSearcher {
 	public void updateFood() throws IOException{
 		List<City> list=cityService.getAll();
 		updateFood(list);
+		Set<String> countries=new HashSet<>();
+		for(City c:list)
+			countries.add(c.getCountry());
+		for(String cnt:countries){
+			correctFood0(cnt);
+		}
 	}
 	
 	public void updateFood(List<City> cities) throws IOException {
@@ -204,6 +210,26 @@ public class InfoSearcher {
 			cityService.add(city);
 		}
 	}
+	public void correctFood0(String country){
+		List<City> list=cityService.getCountry(country);
+		int not0=0;
+		double avg=0;
+		for(City c:list){
+			if(c.getPriceFood()!=0){
+				not0++;
+				avg+=c.getPriceFood();
+			}				
+		}
+		if(not0!=0){
+			int iAvg=(int) Math.round(avg/not0);
+			for(City c:list){
+				if(c.getPriceFood()==0){
+					c.setPriceFood(iAvg);
+					cityService.add(c);
+				}
+			}
+		}
+	}
 
 	public void updateLive() throws IOException{
 		List<City> cities=cityService.getAll();
@@ -245,6 +271,9 @@ public class InfoSearcher {
 			int endIndex = str.indexOf("</table>", startIndex);
 			str = str.substring(startIndex, endIndex);
 
+			int not0=0;
+			double avg=0;
+			
 			for (City c : cities) {
 				String cityStr = c.getName()
 						+ (!((c.getRegion().equals(""))) ? ", " : "")
@@ -266,9 +295,18 @@ public class InfoSearcher {
 					endIndex = str1.lastIndexOf('&');
 					str1 = str1.substring(startIndex, endIndex);
 					int price = (int) Math.round(Double.parseDouble(str1));
+					not0++;
+					avg+=price;
 					c.setPriceLive(price);
 				}
 				else c.setPriceLive(0);
+			}
+			if(not0!=0){
+				int iAvg=(int)Math.round(avg/not0);
+				for(City c:cities){
+					if(c.getPriceLive()==0)
+						c.setPriceLive(iAvg);
+				}
 			}
 			cityService.add(cities);
 		}
