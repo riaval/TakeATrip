@@ -1,6 +1,8 @@
 package com.takeatrip.service.implementation;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -52,6 +54,8 @@ public class CityServiceImpl implements CityService {
     			res.add(t.getCityB());
     		else res.add(t.getCityA());
     	}
+    	Collection<City> col=new HashSet<City>(res);
+    	res=new ArrayList<City>(col);
         return res;
     }
 

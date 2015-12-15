@@ -7,12 +7,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.takeatrip.domain.City;
+import com.takeatrip.domain.TransferType;
 import com.takeatrip.service.CityService;
+import com.takeatrip.service.TransferService;
 
 import org.springframework.stereotype.Component;
 
@@ -20,6 +23,8 @@ import org.springframework.stereotype.Component;
 public class InfoSearcher {
 	@Autowired
 	CityService cityService;
+	@Autowired
+	TransferService transferService;
 
 	public InfoSearcher() {
 	}
@@ -61,7 +66,7 @@ public class InfoSearcher {
 		int startIndex = str.indexOf("\"") + 1;
 		int endIndex = str.indexOf("\"", startIndex);
 		String country = str.substring(startIndex, endIndex);
-		if (!nameIsFine(country) || !country.equals("Monaco"))
+		if (!nameIsFine(country) || !country.equals("Ukraine"))
 			return;
 
 		if (!country.equals("Jersey")) {
@@ -96,6 +101,11 @@ public class InfoSearcher {
 		return true;
 	}
 
+	public void updateFood() throws IOException{
+		List<City> list=cityService.getAll();
+		updateFood(list);
+	}
+	
 	public void updateFood(List<City> cities) throws IOException {
 		int N = cities.size();
 		for (int i = 0; i < N / 2; i++)
@@ -261,6 +271,23 @@ public class InfoSearcher {
 				else c.setPriceLive(0);
 			}
 			cityService.add(cities);
+		}
+	}
+	
+	public void updateTransport(){
+		//setRandomTransport();
+	}
+	private void setRandomTransport(){
+		Random rnd=new Random();
+		List<City> cities=cityService.getAll();
+		for(City c1:cities){
+			for(City c2:cities){
+				if(c1.getId().compareTo(c2.getId())==1){
+					transferService.add(c1.getId(),c2.getId(),rnd.nextInt(2)+3,0,TransferType.TRAIN);
+					transferService.add(c1.getId(),c2.getId(),rnd.nextInt(2)+5,0,TransferType.BUS);
+					transferService.add(c1.getId(),c2.getId(),rnd.nextInt(6)+15,0,TransferType.PLANE);
+				}
+			}
 		}
 	}
 }
